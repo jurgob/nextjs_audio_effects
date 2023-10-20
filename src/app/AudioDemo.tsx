@@ -2,8 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import Script from 'next/script'
+import Select, { components } from "react-select";
 
+type AudioFilterNames = "lowpass" | "noisereduction"
 
+const options: {label: string, value: AudioFilterNames}[] = [
+  { label: "Low Filter Pass", value: "lowpass" },
+  { label: "Noise Reduction", value: "noisereduction" },
+];
 
 
 const lowPassFilter = (stream:MediaStream): MediaStream => {
@@ -30,44 +36,52 @@ export const AudioDemo = () => {
     const analyserCanvas: any = React.useRef(null);
     const audioTag = React.useRef<HTMLAudioElement>(null);
     const [started, setStarted] = useState(false);
+    const [filter, setFilter] = useState<AudioFilterNames | undefined>('lowpass')
+    const audioStartStop = async () => {
+        if(started){
+            if(audioTag.current && audioTag.current.srcObject){
+                console.log('stopping')
+                audioTag.current?.pause()
+                audioTag.current.srcObject = null;
+                setStarted(false);
+            }
+            return ;
+        }
 
-    useEffect(() => {
-            const audioTest = async () => {
-            if(started) return;
-            setStarted(true);
+        if (navigator.mediaDevices.getUserMedia !== null) {
 
-
-            console.log('audio')
-            if (navigator.mediaDevices.getUserMedia !== null) {
-                const options = {
+            const options = {
                 video: false,
                 audio: true,
-                };
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia(options);
+            };
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia(options);
 
-                    const processedStream = lowPassFilter(stream);
-                    // const processedStream = stream;
+                const processedStream = lowPassFilter(stream);
+                // const processedStream = stream;
 
-                    if(audioTag.current && !audioTag.current.srcObject){
-                        audioTag.current?.play()
-                        audioTag.current.srcObject = processedStream;
-                    }
-
-                }catch (err) {
-                    console.error(err);
+                if(audioTag.current && !audioTag.current.srcObject){
+                    audioTag.current?.play()
+                    audioTag.current.srcObject = processedStream;
+                    setStarted(true)
                 }
+
+            }catch (err) {
+                console.error(err);
             }
         }
-        // setTimeout(()=> {
-        //     audioTest()
-        // }, 500)
-        audioTest()
-    }, [started]);
+    }
 
     return(
         <div>
             <h1>Audio Demo</h1>
+            <Select
+                options={options}
+                onChange={(opt) => setFilter(opt?.value)}
+                />
+            filter: {filter} | {started.toString()}
+
+            <button onClick={() => audioStartStop()} >Play</button>
             <audio ref={audioTag} controls={true} autoPlay >hello</audio>
             {/* <canvas ref={analyserCanvas} className=""></canvas> */}
         </div>
