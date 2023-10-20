@@ -2,15 +2,15 @@
 
 import React, { useEffect, useState } from 'react';
 import Script from 'next/script'
-declare var MediaStreamTrackProcessor: any;
-declare var MediaStreamTrackGenerator: any;
+
 
 
 
 const lowPassFilter = (stream:MediaStream): MediaStream => {
     const audioTracks = stream.getAudioTracks();
-    const processor = new MediaStreamTrackProcessor(audioTracks[0]);
-    const generator = new MediaStreamTrackGenerator('audio');
+    // const processor1 = new MediaStreamTrackProcessor()
+    const processor = new MediaStreamTrackProcessor({track: audioTracks[0]});
+    const generator = new MediaStreamTrackGenerator({kind: 'audio'});
     const source = processor.readable;
     const sink = generator.writable;
     const worker = new Worker('/js/low_pass_filter_worker.js');
