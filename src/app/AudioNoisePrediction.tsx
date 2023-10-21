@@ -54,15 +54,16 @@ export const AudioNoisePrediction = () => {
         <h2> Audio Noise Prediction </h2>
         <div>
             {labels.map((label, i) => {
-                const value = prediction[i] as number * 100;
+                const value = Math.floor(prediction[i] as number * 100);
+                
                 return (
-                    <div key={i} className='pt-1 pb-1'>
-                        <div>{label}</div>
-                        <div  className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
-                            <div 
-                                className="bg-blue-600 text-lg font-medium text-blue-100text-key={i} center p-0.5 leading-none rounded-full" 
-                                style={{width: `${Math.floor(value)}%`}}> {`${Math.floor(value)}%`}
+                    <div key={i} className='pt-2 pb-2'>
+                        <div className="flex justify-between mb-1">
+                            <span className="text-base font-medium text-blue-700 dark:text-white">{label}</span>
+                            <span className="text-sm font-medium text-blue-700 dark:text-white">{value}%</span>
                             </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div className="bg-blue-600 h-2.5 rounded-full" style={{width: `${value}%`}}></div>
                         </div>
                     </div>
                 );
