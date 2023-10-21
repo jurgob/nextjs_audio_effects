@@ -1,14 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import Script from 'next/script'
 import Select, { components } from "react-select";
+import Script from 'next/script'
+import {AudioNoisePrediction} from "./AudioNoisePrediction";
 
-type AudioFilterNames = "lowpass" | "noisereduction"
 
-const options: {label: string, value: AudioFilterNames}[] = [
-  { label: "Low Filter Pass", value: "lowpass" },
-  { label: "Noise Reduction", value: "noisereduction" },
+type AudioFilterNames = "lowpass" | "noisereduction" | "none"
+
+const options: {label: string, value: AudioFilterNames }[] = [
+    { label: "no effect", value: "none" },
+    { label: "Low Filter Pass", value: "lowpass" },
+    { label: "Noise Reduction", value: "noisereduction" },
 ];
 
 
@@ -28,15 +31,19 @@ const lowPassFilter = (stream:MediaStream): MediaStream => {
 
 }
 
+
+
+
+
 export const AudioDemo = () => {
     <>
       <Script src="/js/low_pass_filter_worker.js" strategy="worker" />
     </>
-
+    // setupModel();
     const analyserCanvas: any = React.useRef(null);
     const audioTag = React.useRef<HTMLAudioElement>(null);
     const [started, setStarted] = useState(false);
-    const [filter, setFilter] = useState<AudioFilterNames | undefined>('lowpass')
+    const [filter, setFilter] = useState<AudioFilterNames>('none')
     const audioStartStop = async () => {
         if(started){
             if(audioTag.current && audioTag.current.srcObject){
@@ -75,14 +82,23 @@ export const AudioDemo = () => {
     return(
         <div>
             <h1>Audio Demo</h1>
-            <Select
+            {/* <select onChange={(e) => setFilter(e.target.value as AudioFilterNames)} value={filter}  /> */}
+            {/* <Select
                 options={options}
-                onChange={(opt) => setFilter(opt?.value)}
-                />
+                onChange={(opt) => {
+                    console.log(opt?.value);
+                    setFilter(opt?.value)
+                }}
+                value={filter}
+                isSearchable
+            style={{width: '200px'}} */}
+                {/* /> */}
             filter: {filter} | {started.toString()}
-
-            <button onClick={() => audioStartStop()} >Play</button>
-            <audio ref={audioTag} controls={true} autoPlay >hello</audio>
+            <div>
+                <button onClick={() => audioStartStop()} >Play</button>
+            </div>
+            <audio ref={audioTag} controls={true} autoPlay onPlay={() => console.log('play')}  >hello</audio>
+            <AudioNoisePrediction />
             {/* <canvas ref={analyserCanvas} className=""></canvas> */}
         </div>
     );
