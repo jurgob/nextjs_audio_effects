@@ -20,6 +20,7 @@ export const AudioNoisePrediction = () => {
     
         //store the prediction and audio callback functions
         // const predictionCallback = VERCEL_URL;
+        console.log(process.env);
         const URL_DOMAIN = VERCEL_URL ? `https://${VERCEL_URL}` : 'http://localhost:3000';
         const URL = `${URL_DOMAIN}/js/noise_prediction/`;
         const modelURL = `${URL}model.json`;
