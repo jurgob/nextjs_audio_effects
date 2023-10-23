@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import * as speechCommands from '@tensorflow-models/speech-commands';
 import '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs';
-const {VERCEL_URL} = process.env;
 export const AudioNoisePrediction = () => {
     const labels = [
         "Brushing teeth",
@@ -17,12 +16,7 @@ export const AudioNoisePrediction = () => {
     
 
     async function setupModel() {
-    
-        //store the prediction and audio callback functions
-        // const predictionCallback = VERCEL_URL;
-        console.log(process.env);
-        const URL_DOMAIN = VERCEL_URL ? `https://${VERCEL_URL}` : 'http://localhost:3000';
-        const URL = `${URL_DOMAIN}/js/noise_prediction/`;
+        const URL = `${window.location.toString()}/js/noise_prediction/`;
         const modelURL = `${URL}model.json`;
         const metadataURL = `${URL}metadata.json`;
         console.log(modelURL)
