@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Select, { components } from "react-select";
 import Script from 'next/script'
 import {AudioNoisePrediction} from "./AudioNoisePrediction";
+import {TFSpeechCommandPrediction} from "./TFSpeechCommandPrediction";
 
 
 type AudioFilterNames = "lowpass" | "noisereduction" | "none"
@@ -81,7 +82,7 @@ export const AudioDemo = () => {
 
     return(
         <div>
-            <h1>Audio Demo</h1>
+            <h1 className='text-3xl font-extrabold' >Audio Demo</h1>
             {/* <select onChange={(e) => setFilter(e.target.value as AudioFilterNames)} value={filter}  /> */}
             {/* <Select
                 options={options}
@@ -93,12 +94,16 @@ export const AudioDemo = () => {
                 isSearchable
             style={{width: '200px'}} */}
                 {/* /> */}
-            filter: {filter} | {started.toString()}
-            <div>
-                <button onClick={() => audioStartStop()} >Play</button>
+            <div  className='pt-5' >
+                <h2 className='text-2xl font-extrabold' >Low Pass filter  </h2>
+                <div>
+                    <div>filter: {filter} | {started.toString()}</div>
+                    <button onClick={() => audioStartStop()} >Play</button>
+                </div>
+                <audio ref={audioTag} controls={true} autoPlay onPlay={() => console.log('play')}  >hello</audio>
             </div>
-            <audio ref={audioTag} controls={true} autoPlay onPlay={() => console.log('play')}  >hello</audio>
             <AudioNoisePrediction />
+            <TFSpeechCommandPrediction />
             {/* <canvas ref={analyserCanvas} className=""></canvas> */}
         </div>
     );

@@ -3,16 +3,9 @@ import * as speechCommands from '@tensorflow-models/speech-commands';
 import '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs';
 export const AudioNoisePrediction = () => {
-    const labels = [
-        "Brushing teeth",
-        "Coughing",
-        "Phone ringing",
-        "Speaking",
-        "Typing",
-        "_background_noise_"
-      ]
-
-    const [prediction, setPrediction] = useState<Float32Array|Float32Array[]>(new Float32Array(labels.length).fill(0));
+ 
+    const [prediction, setPrediction] = useState<Float32Array|Float32Array[]>(new Float32Array().fill(0));
+    const [labels, setLabels] = useState<string[]>([])
     
 
     async function setupModel() {
@@ -23,11 +16,13 @@ export const AudioNoisePrediction = () => {
         console.log(metadataURL)
         const model = speechCommands.create('BROWSER_FFT', undefined, modelURL, metadataURL);
         await model.ensureModelLoaded();
-     
+        const words = model.wordLabels();
+        setLabels(words);
+
         const modelParameters : speechCommands.StreamingRecognitionConfig= {
             invokeCallbackOnNoiseAndUnknown: true, // run even when only background noise is detected
             includeSpectrogram: true, // give us access to numerical audio data
-            overlapFactor: 0.5 // how often per second to sample audio, 0.5 means twice per second
+            overlapFactor: 0.5 // how often per second to sample audio, 0.5 means twice per second, 
         };
         
      
@@ -46,9 +41,10 @@ export const AudioNoisePrediction = () => {
             setupModel();
         }, []);
 
-     return <div>
-        <h2> Audio Noise Prediction </h2>
+     return <div  className='pt-5' >
+        <h2 className='text-2xl font-extrabold' > Audio Noise Prediction </h2>
         <div>
+            {!labels.length && <div> Loading model... </div>}
             {labels.map((label, i) => {
                 const value = Math.floor(prediction[i] as number * 100);
                 
