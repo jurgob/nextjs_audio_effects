@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as speechCommands from '@tensorflow-models/speech-commands';
-import '@tensorflow/tfjs-core';
+// import '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs';
 export const AudioNoisePrediction = () => {
  
