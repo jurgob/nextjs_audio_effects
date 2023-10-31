@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-    reactStrictMode: true,
     nextScriptWorkers: true,
     webpack: (config, { isServer }) => {
         // plugin config, etc
