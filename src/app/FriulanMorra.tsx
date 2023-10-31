@@ -6,14 +6,14 @@ import '@tensorflow/tfjs';
 import * as speechCommands from '@tensorflow-models/speech-commands';
 
 
-const useDidMountEffect = (func:Function, deps: React.DependencyList) => {
-    const didMount = useRef(false);
+// const useDidMountEffect = (func:Function, deps: React.DependencyList) => {
+//     const didMount = useRef(false);
 
-    useEffect(() => {
-        if (didMount.current) func();
-        else didMount.current = true;
-    }, deps);
-}
+//     useEffect(() => {
+//         if (didMount.current) func();
+//         else didMount.current = true;
+//     }, deps);
+// }
 
 
 const prediction2Number: Record<string, number> = {
@@ -99,7 +99,7 @@ export const FriulanMorra = () => {
         );
      }
 
-     useDidMountEffect(() => {
+     useEffect(() => {
             setupModel();
         }, []);
     
