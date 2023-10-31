@@ -2,8 +2,9 @@
 'use client'
 
 import React, { useEffect, useState,useRef } from 'react';
-import * as speechCommands from '@tensorflow-models/speech-commands';
 import '@tensorflow/tfjs';
+import * as speechCommands from '@tensorflow-models/speech-commands';
+
 
 const useDidMountEffect = (func:Function, deps: React.DependencyList) => {
     const didMount = useRef(false);
