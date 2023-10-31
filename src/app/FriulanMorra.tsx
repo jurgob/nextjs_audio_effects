@@ -3,7 +3,6 @@
 
 import React, { useEffect, useState,useRef } from 'react';
 import * as speechCommands from '@tensorflow-models/speech-commands';
-import '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs';
 
 const useDidMountEffect = (func:Function, deps: React.DependencyList) => {
